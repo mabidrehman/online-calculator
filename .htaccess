@@ -1,0 +1,6 @@
+# The project root holds tooling (node_modules, tests, .git, package files)
+# that must never be served. Only public/ is web-accessible; it re-allows
+# access in its own .htaccess. Prefer pointing the document root at public/.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
