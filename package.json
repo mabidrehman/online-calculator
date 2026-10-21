@@ -1,0 +1,16 @@
+{
+  "name": "calculadora-online",
+  "version": "1.0.0",
+  "description": "Calculadora online básica en español con historial, teclado y temas.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\""
+  },
+  "devDependencies": {
+    "jsdom": "25.0.1"
+  }
+}

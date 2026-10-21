@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment files (never commit secrets)
+.env
+.env.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and coverage
+*.log
+coverage/
