@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Calculadora Online Gratis: suma, resta, multiplica y divide</title>
+  <meta name="description" content="Calculadora online gratis y fácil de usar. Suma, resta, multiplica y divide con decimales, números negativos y paréntesis. Funciona con el teclado, guarda tu historial y tiene 8 temas.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2457c5">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Calculadora Online Gratis">
+  <meta property="og:description" content="Suma, resta, multiplica y divide con decimales, negativos y paréntesis. Con historial, atajos de teclado y 8 temas.">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Applies the saved theme before first paint (classic script, must stay in <head>). -->
+  <script src="js/theme-boot.js"></script>
+  <script type="module" src="js/main.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Calculadora Online Gratis",
+        "description": "Calculadora online para sumar, restar, multiplicar y dividir con decimales, números negativos y paréntesis, con historial y atajos de teclado.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Cualquiera (funciona en el navegador)",
+        "inLanguage": "es",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿La calculadora respeta el orden de las operaciones?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Primero resuelve lo que está entre paréntesis, después las multiplicaciones y divisiones, y por último las sumas y restas, siempre de izquierda a derecha. Por ejemplo, 2 + 3 × 4 da 14." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo escribo un número negativo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Pulsa la tecla de resta (−) antes del número. Puedes hacerlo al principio, después de abrir un paréntesis o después de multiplicar o dividir, por ejemplo 5 × −3." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo usar la calculadora con el teclado?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Escribe números y operadores directamente, pulsa Intro para ver el resultado, Retroceso para borrar el último carácter y Esc para empezar de cero. También funciona el teclado numérico." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Dónde se guarda mi historial?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Solo en tu navegador. Tus cálculos no se envían a ningún servidor y puedes borrarlos cuando quieras con el botón Borrar historial." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Por qué aparece el mensaje «No se puede dividir entre cero»?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Porque la división entre cero no tiene un resultado definido. Corrige el divisor con la tecla de borrar y vuelve a pulsar igual." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Funciona en el móvil?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. La calculadora se adapta a cualquier pantalla y sus botones son grandes para usarlos cómodamente con el dedo." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <header class="site-header container">
+    <h1>Calculadora online</h1>
+    <p>Rápida, gratuita y sin anuncios. Haz tus cuentas con el ratón, el dedo o el teclado.</p>
+  </header>
+
+  <main>
+    <div class="app container">
+      <section class="calculator card" aria-label="Calculadora">
+        <p id="app-status" class="status-message" role="alert"></p>
+        <noscript>
+          <p class="status-message">Necesitas activar JavaScript para usar la calculadora.</p>
+        </noscript>
+
+        <div class="display">
+          <div id="display-secondary" class="display__secondary"></div>
+          <output id="display-primary" class="display__primary" aria-live="polite" aria-label="Resultado">0</output>
+          <p id="display-error" class="display__error" role="alert"></p>
+        </div>
+
+        <div id="keypad" class="keypad">
+          <button type="button" class="key key--function" data-action="clear" aria-label="Borrar todo">C</button>
+          <button type="button" class="key key--function" data-action="backspace" aria-label="Borrar último carácter">⌫</button>
+          <button type="button" class="key key--function" data-action="openParen" aria-label="Abrir paréntesis">(</button>
+          <button type="button" class="key key--function" data-action="closeParen" aria-label="Cerrar paréntesis">)</button>
+
+          <button type="button" class="key" data-action="digit" data-value="7">7</button>
+          <button type="button" class="key" data-action="digit" data-value="8">8</button>
+          <button type="button" class="key" data-action="digit" data-value="9">9</button>
+          <button type="button" class="key key--operator" data-action="operator" data-value="/" aria-label="Dividir">÷</button>
+
+          <button type="button" class="key" data-action="digit" data-value="4">4</button>
+          <button type="button" class="key" data-action="digit" data-value="5">5</button>
+          <button type="button" class="key" data-action="digit" data-value="6">6</button>
+          <button type="button" class="key key--operator" data-action="operator" data-value="*" aria-label="Multiplicar">×</button>
+
+          <button type="button" class="key" data-action="digit" data-value="1">1</button>
+          <button type="button" class="key" data-action="digit" data-value="2">2</button>
+          <button type="button" class="key" data-action="digit" data-value="3">3</button>
+          <button type="button" class="key key--operator" data-action="operator" data-value="-" aria-label="Restar">−</button>
+
+          <button type="button" class="key" data-action="digit" data-value="0">0</button>
+          <button type="button" class="key" data-action="decimal" aria-label="Coma decimal">,</button>
+          <button type="button" class="key key--equals" data-action="equals" aria-label="Igual">=</button>
+          <button type="button" class="key key--operator" data-action="operator" data-value="+" aria-label="Sumar">+</button>
+        </div>
+
+        <p class="keyboard-hint">Consejo: también puedes usar el teclado. Pulsa <kbd>Intro</kbd> para calcular.</p>
+      </section>
+
+      <aside class="side-panel" aria-label="Historial y apariencia">
+        <section class="card" aria-labelledby="history-title">
+          <div class="panel-header">
+            <h2 id="history-title" class="panel-title">Historial</h2>
+            <button id="history-clear" type="button" class="text-button">Borrar historial</button>
+          </div>
+          <p id="history-empty" class="history-empty">Aún no hay cálculos. Tus resultados aparecerán aquí.</p>
+          <ul id="history-list" class="history-list" hidden></ul>
+        </section>
+
+        <section class="card">
+          <fieldset class="theme-picker">
+            <legend class="panel-title">Tema de colores</legend>
+            <div id="theme-options" class="theme-options"></div>
+          </fieldset>
+        </section>
+      </aside>
+    </div>
+
+    <article class="content container">
+      <h2>Una calculadora online sencilla para las cuentas de cada día</h2>
+      <p>
+        Esta calculadora online gratuita está pensada para resolver operaciones básicas sin distracciones:
+        sumar la compra, repartir una cuenta entre amigos, calcular un descuento o comprobar los deberes.
+        Puedes trabajar con <strong>decimales</strong>, <strong>números negativos</strong> y
+        <strong>paréntesis</strong>, y ver el resultado al instante mientras escribes.
+      </p>
+
+      <h2>Cómo usar la calculadora</h2>
+      <ol>
+        <li>Escribe el primer número con los botones o con el teclado.</li>
+        <li>Elige la operación: suma (+), resta (−), multiplicación (×) o división (÷).</li>
+        <li>Escribe el siguiente número. Debajo verás una vista previa del resultado.</li>
+        <li>Pulsa <strong>=</strong> o la tecla <kbd>Intro</kbd> para obtener el resultado final.</li>
+        <li>Si quieres seguir calculando, pulsa otro operador y la cuenta continuará desde el último resultado.</li>
+      </ol>
+      <p>
+        Para los decimales usa la coma. Si te equivocas, la tecla <strong>⌫</strong> borra el último carácter
+        y la tecla <strong>C</strong> deja la calculadora a cero.
+      </p>
+
+      <h2>El orden de las operaciones</h2>
+      <p>
+        La calculadora sigue las reglas matemáticas habituales. Primero resuelve lo que hay entre paréntesis,
+        luego las multiplicaciones y divisiones y, por último, las sumas y restas. Así, <strong>2 + 3 × 4</strong>
+        da <strong>14</strong>, mientras que <strong>(2 + 3) × 4</strong> da <strong>20</strong>.
+      </p>
+      <p>
+        Si olvidas cerrar un paréntesis, la calculadora lo cierra por ti al pulsar igual. Y si escribes un número
+        justo antes de un paréntesis, como <strong>2(3 + 1)</strong>, se entiende como una multiplicación.
+      </p>
+
+      <h2>Atajos de teclado</h2>
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th scope="col">Tecla</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><kbd>0</kbd> – <kbd>9</kbd></td><td>Escribir números (también desde el teclado numérico)</td></tr>
+          <tr><td><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></td><td>Sumar, restar, multiplicar y dividir (la tecla <kbd>x</kbd> también multiplica)</td></tr>
+          <tr><td><kbd>,</kbd> o <kbd>.</kbd></td><td>Escribir la coma decimal</td></tr>
+          <tr><td><kbd>(</kbd> <kbd>)</kbd></td><td>Abrir y cerrar paréntesis</td></tr>
+          <tr><td><kbd>Intro</kbd> o <kbd>=</kbd></td><td>Calcular el resultado</td></tr>
+          <tr><td><kbd>Retroceso</kbd></td><td>Borrar el último carácter</td></tr>
+          <tr><td><kbd>Esc</kbd> o <kbd>Supr</kbd></td><td>Borrar todo</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Historial de cálculos</h2>
+      <p>
+        Cada vez que pulsas igual, la operación y su resultado se guardan en el historial, con los cálculos
+        más recientes primero. Haz clic en cualquier entrada para recuperar ese resultado y seguir
+        trabajando con él. El historial guarda tus últimos 50 cálculos y se queda solo en tu navegador.
+      </p>
+
+      <h2>Ocho temas para elegir</h2>
+      <p>
+        Puedes cambiar el aspecto de la calculadora con ocho temas: Claro, Oscuro, Océano, Bosque, Atardecer,
+        Lavanda, Retro y Alto contraste. Este último está pensado para personas con baja visión o para usar la
+        calculadora a pleno sol. Tu elección se recuerda la próxima vez que vuelvas.
+      </p>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Preguntas frecuentes</h2>
+
+        <details>
+          <summary><h3>¿La calculadora respeta el orden de las operaciones?</h3></summary>
+          <p>Sí. Primero resuelve lo que está entre paréntesis, después las multiplicaciones y divisiones, y por último las sumas y restas, siempre de izquierda a derecha. Por ejemplo, 2 + 3 × 4 da 14.</p>
+        </details>
+
+        <details>
+          <summary><h3>¿Cómo escribo un número negativo?</h3></summary>
+          <p>Pulsa la tecla de resta (−) antes del número. Puedes hacerlo al principio, después de abrir un paréntesis o después de multiplicar o dividir, por ejemplo 5 × −3.</p>
+        </details>
+
+        <details>
+          <summary><h3>¿Puedo usar la calculadora con el teclado?</h3></summary>
+          <p>Sí. Escribe números y operadores directamente, pulsa Intro para ver el resultado, Retroceso para borrar el último carácter y Esc para empezar de cero. También funciona el teclado numérico.</p>
+        </details>
+
+        <details>
+          <summary><h3>¿Dónde se guarda mi historial?</h3></summary>
+          <p>Solo en tu navegador. Tus cálculos no se envían a ningún servidor y puedes borrarlos cuando quieras con el botón Borrar historial.</p>
+        </details>
+
+        <details>
+          <summary><h3>¿Por qué aparece el mensaje «No se puede dividir entre cero»?</h3></summary>
+          <p>Porque la división entre cero no tiene un resultado definido. Corrige el divisor con la tecla de borrar y vuelve a pulsar igual.</p>
+        </details>
+
+        <details>
+          <summary><h3>¿Funciona en el móvil?</h3></summary>
+          <p>Sí. La calculadora se adapta a cualquier pantalla y sus botones son grandes para usarlos cómodamente con el dedo.</p>
+        </details>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Calculadora online gratuita. Tus cálculos se procesan en tu dispositivo y nunca salen de tu navegador.</p>
+    </div>
+  </footer>
+</body>
+</html>
