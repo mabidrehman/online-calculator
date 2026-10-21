@@ -4,10 +4,11 @@
  */
 
 /**
- * Results are rounded to this many significant digits, which hides binary
- * floating-point noise (0.1 + 0.2 → 0.3) while keeping typical precision.
+ * Results are rounded to this many significant digits. 15 is the most a
+ * double always represents faithfully, so this hides binary floating-point
+ * noise (0.1 + 0.2 → 0.3) without altering exactly representable numbers.
  */
-export const SIGNIFICANT_DIGITS = 12;
+export const SIGNIFICANT_DIGITS = 15;
 
 const DISPLAY_CHARACTERS = Object.freeze({
   '*': '×',

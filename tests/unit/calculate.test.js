@@ -41,7 +41,9 @@ describe('calculate: decimals', () => {
   it('hides noise in multiplication', () => assert.equal(calculate('1.1*1.1'), 1.21));
   it('accepts a leading decimal point', () => assert.equal(calculate('.5*2'), 1));
   it('accepts a trailing decimal point', () => assert.equal(calculate('5.+1'), 6));
-  it('rounds repeating decimals to 12 significant digits', () => assert.equal(calculate('1/3'), 0.333333333333));
+  it('hides noise in sums that land just below a value', () => assert.equal(calculate('0.1+0.7'), 0.8));
+  it('rounds repeating decimals to 15 significant digits', () => assert.equal(calculate('1/3'), 0.333333333333333));
+  it('keeps 15-digit integers exact', () => assert.equal(calculate('123456789012345+0'), 123456789012345));
   it('accepts exponent notation from previous results', () => assert.equal(calculate('1e+21*2'), 2e21));
   it('accepts negative exponents', () => assert.equal(calculate('1e-7*10'), 0.000001));
 });

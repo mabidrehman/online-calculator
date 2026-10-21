@@ -42,7 +42,7 @@ public/                    Web root (the only folder that should be served)
     syntax.js              Canonical expression format and validators
     tokenizer.js           Expression string → tokens
     parser.js              Recursive-descent evaluator (no eval), nesting limit
-    calculate.js           tokenize + evaluate + round to 12 significant digits
+    calculate.js           tokenize + evaluate + round to 15 significant digits
     calculator-state.js    Keypad input rules (state machine) and live preview
     number-format.js       Rounding and Spanish display formatting (× ÷ − ,)
     errors.js              Error codes + CalculationError
