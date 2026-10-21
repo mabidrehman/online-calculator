@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 
 import { initCalculatorApp } from '../../public/js/app.js';
+import { actionFor } from './press.js';
 
 export const INDEX_HTML = readFileSync(new URL('../../public/index.html', import.meta.url), 'utf8');
 
@@ -30,29 +31,16 @@ export function createApp(options) {
       (button) => button.dataset.action === action && (value === undefined || button.dataset.value === value),
     );
 
-  const BUTTON_FOR_SYMBOL = {
-    '.': ['decimal'],
-    '(': ['openParen'],
-    ')': ['closeParen'],
-    '=': ['equals'],
-    '<': ['backspace'],
-    C: ['clear'],
-  };
-
   return {
     window,
     document,
     keypadButton,
 
-    /** Clicks keypad buttons: digits, + - * /, and . ( ) = < (backspace) C (clear). */
+    /** Clicks keypad buttons using the symbols understood by actionFor(). */
     click(sequence) {
       for (const symbol of sequence) {
-        const [action, value] = /^[0-9]$/.test(symbol)
-          ? ['digit', symbol]
-          : '+-*/'.includes(symbol)
-            ? ['operator', symbol]
-            : BUTTON_FOR_SYMBOL[symbol];
-        const button = keypadButton(action, value);
+        const { type, value } = actionFor(symbol);
+        const button = keypadButton(type, value);
         if (!button) throw new Error(`No keypad button for "${symbol}"`);
         button.click();
       }

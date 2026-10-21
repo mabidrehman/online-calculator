@@ -37,6 +37,11 @@ a {
   outline-offset: 2px;
 }
 
+/* Component display rules (e.g. display: grid) must not override [hidden]. */
+[hidden] {
+  display: none !important;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
