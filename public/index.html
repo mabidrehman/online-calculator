@@ -7,14 +7,14 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <title>Calculadora Online Gratis: suma, resta, multiplica y divide</title>
-  <meta name="description" content="Calculadora online gratis: suma, resta, multiplica y divide con decimales, negativos y paréntesis. Úsala con el teclado, con historial y 8 temas.">
+  <meta name="description" content="Calculadora online gratis: suma, resta, multiplica y divide con decimales, negativos y paréntesis. Úsala con el teclado, con historial y 6 temas.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#2457c5">
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:title" content="Calculadora Online Gratis">
-  <meta property="og:description" content="Suma, resta, multiplica y divide con decimales, negativos y paréntesis. Con historial, atajos de teclado y 8 temas.">
+  <meta property="og:description" content="Suma, resta, multiplica y divide con decimales, negativos y paréntesis. Con historial, atajos de teclado y 6 temas.">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/themes.css">
@@ -92,6 +92,11 @@
           <p class="status-message">Necesitas activar JavaScript para usar la calculadora.</p>
         </noscript>
 
+        <div class="theme-control">
+          <label for="theme-select">Tema de color</label>
+          <select id="theme-select" class="theme-select"></select>
+        </div>
+
         <div class="display">
           <div id="display-secondary" class="display__secondary"></div>
           <output id="display-primary" class="display__primary" aria-live="polite" aria-label="Resultado">0</output>
@@ -128,21 +133,14 @@
         <p class="keyboard-hint">Consejo: también puedes usar el teclado. Pulsa <kbd>Intro</kbd> para calcular.</p>
       </section>
 
-      <aside class="side-panel" aria-label="Historial y apariencia">
+      <aside class="side-panel" aria-label="Historial">
         <section class="card" aria-labelledby="history-title">
           <div class="panel-header">
             <h2 id="history-title" class="panel-title">Historial</h2>
             <button id="history-clear" type="button" class="text-button">Borrar historial</button>
           </div>
-          <p id="history-empty" class="history-empty">Aún no hay cálculos. Tus resultados aparecerán aquí.</p>
+          <p id="history-empty" class="history-empty">Aún no hay cálculos. Tu último resultado aparecerá aquí.</p>
           <ul id="history-list" class="history-list" hidden></ul>
-        </section>
-
-        <section class="card">
-          <fieldset class="theme-picker">
-            <legend class="panel-title">Tema de colores</legend>
-            <div id="theme-options" class="theme-options"></div>
-          </fieldset>
         </section>
       </aside>
     </div>
@@ -201,16 +199,16 @@
 
       <h2>Historial de cálculos</h2>
       <p>
-        Cada vez que pulsas igual, la operación y su resultado se guardan en el historial, con los cálculos
-        más recientes primero. Haz clic en cualquier entrada para recuperar ese resultado y seguir
-        trabajando con él. El historial guarda tus últimos 50 cálculos y se queda solo en tu navegador.
+        Cada vez que pulsas igual, la operación y su resultado aparecen en el historial, sustituyendo al
+        cálculo anterior. Haz clic en él para recuperar ese resultado y seguir trabajando con él.
+        El último cálculo se guarda solo en tu navegador.
       </p>
 
-      <h2>Ocho temas para elegir</h2>
+      <h2>Seis temas de color</h2>
       <p>
-        Puedes cambiar el aspecto de la calculadora con ocho temas: Claro, Oscuro, Océano, Bosque, Atardecer,
-        Lavanda, Retro y Alto contraste. Este último está pensado para personas con baja visión o para usar la
-        calculadora a pleno sol. Tu elección se recuerda la próxima vez que vuelvas.
+        Elige el aspecto de la calculadora en el menú «Tema de color»: Claro, Oscuro, Azul, Verde, Lavanda o
+        Alto contraste. Este último está pensado para personas con baja visión o para usar la calculadora a
+        pleno sol. El tema solo cambia la calculadora y tu elección se recuerda la próxima vez que vuelvas.
       </p>
 
       <section class="faq" aria-labelledby="faq-title">

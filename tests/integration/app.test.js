@@ -4,13 +4,13 @@ import { beforeEach, describe, it, mock } from 'node:test';
 
 import { initCalculatorApp } from '../../public/js/app.js';
 import { HISTORY_STORAGE_KEY } from '../../public/js/features/history.js';
-import { THEME_STORAGE_KEY } from '../../public/js/features/themes.js';
+import { THEME_ATTRIBUTE, THEME_STORAGE_KEY } from '../../public/js/features/themes.js';
 import { createApp, createPageDom } from '../helpers/dom.js';
 
 beforeEach(() => mock.method(console, 'warn', () => {}));
 
 describe('app: initial render', () => {
-  it('shows 0, an empty history and all eight themes', () => {
+  it('shows 0, an empty history and a six-option theme dropdown set to Claro', () => {
     const app = createApp();
     assert.equal(app.primary(), '0');
     assert.equal(app.secondary(), '');
@@ -18,7 +18,13 @@ describe('app: initial render', () => {
     assert.equal(app.document.getElementById('history-empty').hidden, false);
     assert.equal(app.document.getElementById('history-list').hidden, true);
     assert.equal(app.document.getElementById('history-clear').disabled, true);
-    assert.equal(app.document.querySelectorAll('#theme-options input[type="radio"]').length, 8);
+    const select = app.document.getElementById('theme-select');
+    assert.deepEqual(
+      [...select.options].map((option) => option.textContent),
+      ['Claro', 'Oscuro', 'Azul', 'Verde', 'Lavanda', 'Alto contraste'],
+    );
+    assert.equal(select.value, 'claro');
+    assert.equal(app.document.documentElement.getAttribute(THEME_ATTRIBUTE), 'claro');
   });
 });
 
@@ -163,14 +169,35 @@ describe('app: keyboard', () => {
 });
 
 describe('app: history', () => {
-  it('records calculations newest first and persists them', () => {
+  it('shows only the latest calculation, replacing the previous one', () => {
     const app = createApp();
-    app.click('1+1=C2*3=');
-    assert.deepEqual(app.historyItems(), ['2×3 =6', '1+1 =2']);
+    app.click('1+1=');
+    assert.deepEqual(app.historyItems(), ['1+1 =2']);
+    app.click('C2*3=');
+    assert.deepEqual(app.historyItems(), ['2×3 =6']);
+    assert.equal(app.document.querySelectorAll('#history-list li').length, 1);
     assert.equal(app.document.getElementById('history-empty').hidden, true);
     assert.equal(app.document.getElementById('history-clear').disabled, false);
     const saved = JSON.parse(app.window.localStorage.getItem(HISTORY_STORAGE_KEY));
-    assert.deepEqual(saved[0], { expression: '2*3', result: '6' });
+    assert.deepEqual(saved, [{ expression: '2*3', result: '6' }]);
+  });
+
+  it('does not replace the latest calculation when one fails', () => {
+    const app = createApp();
+    app.click('1+1=C5/0=');
+    assert.deepEqual(app.historyItems(), ['1+1 =2']);
+  });
+
+  it('keeps only the newest entry from previously saved multi-entry history', () => {
+    const app = createApp({
+      storage: {
+        [HISTORY_STORAGE_KEY]: JSON.stringify([
+          { expression: '9-1', result: '8' },
+          { expression: '1+1', result: '2' },
+        ]),
+      },
+    });
+    assert.deepEqual(app.historyItems(), ['9−1 =8']);
   });
 
   it('loads saved history on start', () => {
@@ -223,20 +250,45 @@ describe('app: history', () => {
 });
 
 describe('app: themes', () => {
-  it('applies and remembers the selected theme', () => {
+  function chooseTheme(app, themeId) {
+    const select = app.document.getElementById('theme-select');
+    select.value = themeId;
+    select.dispatchEvent(new app.window.Event('change', { bubbles: true }));
+  }
+
+  it('applies and remembers the theme chosen in the dropdown', () => {
     const app = createApp();
-    const radio = app.document.querySelector('#theme-options input[value="retro"]');
-    radio.click();
-    assert.equal(app.document.documentElement.dataset.theme, 'retro');
-    assert.equal(app.window.localStorage.getItem(THEME_STORAGE_KEY), 'retro');
+    chooseTheme(app, 'azul');
+    assert.equal(app.document.documentElement.getAttribute(THEME_ATTRIBUTE), 'azul');
+    assert.equal(app.window.localStorage.getItem(THEME_STORAGE_KEY), 'azul');
   });
 
-  it('marks the active theme on start', () => {
-    const dom = createPageDom({ storage: { [THEME_STORAGE_KEY]: 'bosque' } });
-    dom.window.document.documentElement.dataset.theme = 'bosque';
+  it('labels the dropdown "Tema de color"', () => {
+    const app = createApp();
+    const label = app.document.querySelector('label[for="theme-select"]');
+    assert.equal(label.textContent.trim(), 'Tema de color');
+  });
+
+  it('places the dropdown inside the calculator so only it is themed', () => {
+    const app = createApp();
+    assert.ok(app.document.querySelector('.calculator #theme-select'));
+    assert.equal(app.document.querySelector('.side-panel #theme-select'), null);
+  });
+
+  it('selects the saved theme on start', () => {
+    const dom = createPageDom({ storage: { [THEME_STORAGE_KEY]: 'verde' } });
+    dom.window.document.documentElement.setAttribute(THEME_ATTRIBUTE, 'verde');
     initCalculatorApp({ document: dom.window.document, window: dom.window });
-    const checked = dom.window.document.querySelector('#theme-options input:checked');
-    assert.equal(checked.value, 'bosque');
+    assert.equal(dom.window.document.getElementById('theme-select').value, 'verde');
+  });
+
+  it('keeps calculating after switching themes', () => {
+    const app = createApp();
+    app.click('2+3');
+    chooseTheme(app, 'alto-contraste');
+    app.click('=');
+    assert.equal(app.primary(), '5');
+    assert.deepEqual(app.historyItems(), ['2+3 =5']);
   });
 });
 
@@ -297,11 +349,12 @@ describe('theme-boot.js', () => {
       });
     }
     dom.window.eval(bootScript);
-    return dom.window.document.documentElement.dataset.theme;
+    return dom.window.document.documentElement.getAttribute(THEME_ATTRIBUTE);
   }
 
   it('applies the saved theme', () => assert.equal(runBoot({ saved: 'lavanda' }), 'lavanda'));
-  it('falls back to the light theme', () => assert.equal(runBoot(), 'claro'));
-  it('follows a dark system preference', () => assert.equal(runBoot({ prefersDark: true }), 'oscuro'));
-  it('survives blocked storage', () => assert.equal(runBoot({ blockStorage: true, prefersDark: true }), 'oscuro'));
+  it('leaves first-time visitors on the default (Claro via CSS)', () => assert.equal(runBoot(), null));
+  it('ignores a dark system preference for first-time visitors', () =>
+    assert.equal(runBoot({ prefersDark: true }), null));
+  it('survives blocked storage', () => assert.equal(runBoot({ blockStorage: true }), null));
 });

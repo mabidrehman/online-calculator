@@ -6,15 +6,19 @@ import { logger } from '../shared/logger.js';
  */
 export const THEME_STORAGE_KEY = 'calculadora.tema';
 
-/** Each id has a matching [data-theme="id"] block in css/themes.css. */
+/**
+ * Attribute on <html> holding the selected theme. css/themes.css scopes the
+ * theme tokens to the calculator, so the rest of the page is unaffected.
+ */
+export const THEME_ATTRIBUTE = 'data-calculator-theme';
+
+/** Each id has a matching [data-calculator-theme="id"] block in css/themes.css. */
 export const THEMES = Object.freeze([
   { id: 'claro', label: 'Claro' },
   { id: 'oscuro', label: 'Oscuro' },
-  { id: 'oceano', label: 'Océano' },
-  { id: 'bosque', label: 'Bosque' },
-  { id: 'atardecer', label: 'Atardecer' },
+  { id: 'azul', label: 'Azul' },
+  { id: 'verde', label: 'Verde' },
   { id: 'lavanda', label: 'Lavanda' },
-  { id: 'retro', label: 'Retro' },
   { id: 'alto-contraste', label: 'Alto contraste' },
 ]);
 
@@ -25,14 +29,15 @@ export function isThemeId(id) {
 }
 
 /**
- * Applies and persists the theme via the data-theme attribute on `root`.
+ * Applies and persists the calculator theme via THEME_ATTRIBUTE on `root`.
  * The initial theme is whatever theme-boot.js already applied, if valid.
  *
  * @param {{ root: HTMLElement, storage: ReturnType<import('../shared/storage.js').createSafeStorage> }} deps
  */
 export function createThemeController({ root, storage }) {
-  let current = isThemeId(root.dataset.theme) ? root.dataset.theme : DEFAULT_THEME_ID;
-  root.dataset.theme = current;
+  const applied = root.getAttribute(THEME_ATTRIBUTE);
+  let current = isThemeId(applied) ? applied : DEFAULT_THEME_ID;
+  root.setAttribute(THEME_ATTRIBUTE, current);
 
   return Object.freeze({
     getCurrent: () => current,
@@ -44,7 +49,7 @@ export function createThemeController({ root, storage }) {
         return false;
       }
       current = id;
-      root.dataset.theme = id;
+      root.setAttribute(THEME_ATTRIBUTE, id);
       storage.setItem(THEME_STORAGE_KEY, id);
       return true;
     },

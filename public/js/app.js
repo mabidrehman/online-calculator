@@ -29,7 +29,7 @@ function queryElements(document) {
     historyList: requireElement(document, 'history-list'),
     historyEmpty: requireElement(document, 'history-empty'),
     historyClear: requireElement(document, 'history-clear'),
-    themeOptions: requireElement(document, 'theme-options'),
+    themeSelect: requireElement(document, 'theme-select'),
   };
 }
 
@@ -121,7 +121,7 @@ export function initCalculatorApp({ document, window }) {
     historyView.render(history.getEntries());
   });
 
-  renderThemePicker(elements.themeOptions, {
+  renderThemePicker(elements.themeSelect, {
     currentThemeId: themes.getCurrent(),
     onSelect: (themeId) => themes.setTheme(themeId),
   });

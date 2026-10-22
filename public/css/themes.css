@@ -1,175 +1,129 @@
 /*
- * Theme tokens. Each theme id in js/features/themes.js has a block here.
- * Selectors are attribute-based (not only :root) so theme swatches in the
- * picker can preview a theme by carrying their own data-theme attribute.
- * `:root` without a data-theme falls back to the light theme.
+ * Calculator themes. Each theme id in js/features/themes.js has a block here.
+ * Tokens are set on .calculator only, so a theme recolours the calculator
+ * (card, display, keys, theme dropdown) and never the rest of the page,
+ * which uses the fixed tokens in styles.css. Claro is the default.
+ * Every block defines every token; tests check WCAG contrast for each pair.
  */
 
-:root,
-[data-theme="claro"] {
+.calculator,
+[data-calculator-theme="claro"] .calculator {
   color-scheme: light;
-  --color-bg: #f4f6f9;
   --color-surface: #ffffff;
   --color-text: #1b2430;
-  --color-text-muted: #5a6474;
+  --color-text-muted: #4b5563;
   --color-border: #d9dee6;
   --color-accent: #2457c5;
   --color-error: #b42318;
   --color-display-bg: #eef2f7;
-  --color-display-text: #111827;
+  --color-display-text: #0b1220;
+  --color-display-muted: #374151;
   --color-key-bg: #f1f4f8;
-  --color-key-text: #1b2430;
+  --color-key-text: #111827;
   --color-key-fn-bg: #e2e6ec;
-  --color-key-fn-text: #1b2430;
+  --color-key-fn-text: #111827;
   --color-key-op-bg: #dde6f7;
-  --color-key-op-text: #1e429f;
+  --color-key-op-text: #1e3a8a;
   --color-key-eq-bg: #2457c5;
   --color-key-eq-text: #ffffff;
   --key-border: transparent;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 0.95;
 }
 
-[data-theme="oscuro"] {
+[data-calculator-theme="oscuro"] .calculator {
   color-scheme: dark;
-  --color-bg: #0f1218;
   --color-surface: #181c24;
   --color-text: #e8ebf1;
-  --color-text-muted: #a3abb9;
-  --color-border: #2a303b;
+  --color-text-muted: #b8c0cc;
+  --color-border: #2f3642;
   --color-accent: #7aa2ff;
-  --color-error: #ff8a80;
-  --color-display-bg: #11151c;
-  --color-display-text: #f5f7fa;
-  --color-key-bg: #222833;
-  --color-key-text: #e8ebf1;
-  --color-key-fn-bg: #2c323d;
-  --color-key-fn-text: #e8ebf1;
+  --color-error: #ff9b91;
+  --color-display-bg: #0d1016;
+  --color-display-text: #ffffff;
+  --color-display-muted: #c3cad6;
+  --color-key-bg: #232934;
+  --color-key-text: #f3f5f9;
+  --color-key-fn-bg: #2d333e;
+  --color-key-fn-text: #f3f5f9;
   --color-key-op-bg: #2b3550;
-  --color-key-op-text: #b4c8ff;
+  --color-key-op-text: #c4d4ff;
   --color-key-eq-bg: #5b8cff;
   --color-key-eq-text: #0b1020;
   --key-border: transparent;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 1.2;
 }
 
-[data-theme="oceano"] {
+[data-calculator-theme="azul"] .calculator {
   color-scheme: dark;
-  --color-bg: #062a3a;
-  --color-surface: #0b3a4f;
-  --color-text: #e6f6fb;
-  --color-text-muted: #a7cfdd;
-  --color-border: #1a6380;
-  --color-accent: #5fdcf0;
-  --color-error: #ffb4a8;
-  --color-display-bg: #04202d;
-  --color-display-text: #eafcff;
-  --color-key-bg: #0f4a63;
-  --color-key-text: #e6f6fb;
-  --color-key-fn-bg: #0d4258;
-  --color-key-fn-text: #e6f6fb;
-  --color-key-op-bg: #11607a;
-  --color-key-op-text: #c9f6ff;
-  --color-key-eq-bg: #2bc0d9;
-  --color-key-eq-text: #032530;
+  --color-surface: #0b2545;
+  --color-text: #e8f1ff;
+  --color-text-muted: #b4c8e6;
+  --color-border: #1d3f6e;
+  --color-accent: #7cc4ff;
+  --color-error: #ffaaa0;
+  --color-display-bg: #071a33;
+  --color-display-text: #ffffff;
+  --color-display-muted: #bcd2f0;
+  --color-key-bg: #12345e;
+  --color-key-text: #f0f6ff;
+  --color-key-fn-bg: #0f2c50;
+  --color-key-fn-text: #f0f6ff;
+  --color-key-op-bg: #1a4a85;
+  --color-key-op-text: #d6e9ff;
+  --color-key-eq-bg: #3b9cff;
+  --color-key-eq-text: #04162e;
   --key-border: transparent;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 1.15;
 }
 
-[data-theme="bosque"] {
+[data-calculator-theme="verde"] .calculator {
   color-scheme: light;
-  --color-bg: #eef4ec;
   --color-surface: #ffffff;
   --color-text: #1d2b1f;
-  --color-text-muted: #4f6352;
+  --color-text-muted: #3f5443;
   --color-border: #cfdccb;
   --color-accent: #2f6b3a;
   --color-error: #a8261b;
   --color-display-bg: #e3ede0;
-  --color-display-text: #142016;
+  --color-display-text: #0e1a10;
+  --color-display-muted: #2f4733;
   --color-key-bg: #f2f6f0;
-  --color-key-text: #1d2b1f;
+  --color-key-text: #142016;
   --color-key-fn-bg: #e1e9de;
-  --color-key-fn-text: #1d2b1f;
+  --color-key-fn-text: #142016;
   --color-key-op-bg: #d5e6d1;
-  --color-key-op-text: #24552d;
+  --color-key-op-text: #1f4a27;
   --color-key-eq-bg: #2f6b3a;
   --color-key-eq-text: #ffffff;
   --key-border: transparent;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 0.95;
 }
 
-[data-theme="atardecer"] {
+[data-calculator-theme="lavanda"] .calculator {
   color-scheme: light;
-  --color-bg: #fff3e8;
-  --color-surface: #fffaf5;
-  --color-text: #3a1f12;
-  --color-text-muted: #7a4b35;
-  --color-border: #f1d6c2;
-  --color-accent: #b93d0a;
-  --color-error: #b91c1c;
-  --color-display-bg: #fde7d6;
-  --color-display-text: #2d160b;
-  --color-key-bg: #fff1e6;
-  --color-key-text: #3a1f12;
-  --color-key-fn-bg: #f7e2d3;
-  --color-key-fn-text: #3a1f12;
-  --color-key-op-bg: #fcd9c0;
-  --color-key-op-text: #8a2e0f;
-  --color-key-eq-bg: #b93d0a;
-  --color-key-eq-text: #ffffff;
-  --key-border: transparent;
-  --font-display: var(--font-sans);
-}
-
-[data-theme="lavanda"] {
-  color-scheme: light;
-  --color-bg: #f5f2fb;
   --color-surface: #ffffff;
   --color-text: #2a2140;
-  --color-text-muted: #5f5478;
+  --color-text-muted: #4e4466;
   --color-border: #e0d8f0;
   --color-accent: #6d3fc0;
   --color-error: #b42318;
   --color-display-bg: #efe9f9;
-  --color-display-text: #1f1733;
+  --color-display-text: #150f26;
+  --color-display-muted: #3d3357;
   --color-key-bg: #f6f3fc;
-  --color-key-text: #2a2140;
+  --color-key-text: #1f1733;
   --color-key-fn-bg: #e9e3f3;
-  --color-key-fn-text: #2a2140;
+  --color-key-fn-text: #1f1733;
   --color-key-op-bg: #e6dcf7;
-  --color-key-op-text: #55309a;
+  --color-key-op-text: #4a2888;
   --color-key-eq-bg: #6d3fc0;
   --color-key-eq-text: #ffffff;
   --key-border: transparent;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 0.95;
 }
 
-[data-theme="retro"] {
+[data-calculator-theme="alto-contraste"] .calculator {
   color-scheme: dark;
-  --color-bg: #14110b;
-  --color-surface: #1d1910;
-  --color-text: #ffcf6e;
-  --color-text-muted: #d4ad5c;
-  --color-border: #4a3f22;
-  --color-accent: #ffb000;
-  --color-error: #ff8b7b;
-  --color-display-bg: #0d0b07;
-  --color-display-text: #ffd27a;
-  --color-key-bg: #262012;
-  --color-key-text: #ffcf6e;
-  --color-key-fn-bg: #2f2817;
-  --color-key-fn-text: #ffcf6e;
-  --color-key-op-bg: #3a2e12;
-  --color-key-op-text: #ffc34d;
-  --color-key-eq-bg: #ffb000;
-  --color-key-eq-text: #1a1405;
-  --key-border: transparent;
-  --font-display: var(--font-mono);
-}
-
-[data-theme="alto-contraste"] {
-  color-scheme: dark;
-  --color-bg: #000000;
   --color-surface: #000000;
   --color-text: #ffffff;
   --color-text-muted: #ffffff;
@@ -178,6 +132,7 @@
   --color-error: #ff8080;
   --color-display-bg: #000000;
   --color-display-text: #ffffff;
+  --color-display-muted: #ffffff;
   --color-key-bg: #000000;
   --color-key-text: #ffffff;
   --color-key-fn-bg: #000000;
@@ -187,5 +142,5 @@
   --color-key-eq-bg: #ffff00;
   --color-key-eq-text: #000000;
   --key-border: #ffffff;
-  --font-display: var(--font-sans);
+  --key-hover-brightness: 1;
 }

@@ -114,8 +114,10 @@ describe('page: accessibility', () => {
     assert.equal(document.getElementById('display-error').getAttribute('role'), 'alert');
   });
 
-  it('labels the theme group', () => {
-    assert.ok(normalize(document.querySelector('.theme-picker legend').textContent));
+  it('labels the theme dropdown', () => {
+    const select = document.getElementById('theme-select');
+    assert.equal(select.tagName, 'SELECT');
+    assert.equal(normalize(document.querySelector(`label[for="${select.id}"]`).textContent), 'Tema de color');
   });
 });
 

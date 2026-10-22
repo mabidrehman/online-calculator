@@ -2,7 +2,7 @@
 
 A basic Spanish-language online calculator built with plain HTML, CSS and JavaScript (ES modules). It has no build step, no backend and no runtime dependencies.
 
-**Features:** addition, subtraction, multiplication and division, decimals (shown with a decimal comma), negative numbers, parentheses with standard operator precedence, clear, backspace, equals, full keyboard support, calculation history (last 50, stored in the browser), eight colour themes, and a responsive homepage with Spanish SEO content and FAQ structured data.
+**Features:** addition, subtraction, multiplication and division, decimals (shown with a decimal comma), negative numbers, parentheses with standard operator precedence, clear, backspace, equals, full keyboard support, a history showing the latest completed calculation (stored in the browser), six calculator colour themes chosen from a dropdown (Claro by default; themes recolour only the calculator), and a responsive homepage with Spanish SEO content and FAQ structured data.
 
 ## Setup
 
@@ -33,7 +33,7 @@ There are no secrets or environment variables. If you add some later, keep them 
 ```
 public/                    Web root (the only folder that should be served)
   index.html               Page markup, SEO content, FAQ + JSON-LD, CSP
-  css/themes.css           Colour tokens for the 8 themes ([data-theme="…"])
+  css/themes.css           Calculator-scoped tokens for the 6 themes
   css/styles.css           Layout and components (mobile first)
   js/theme-boot.js         Tiny classic script: applies saved theme before first paint
   js/main.js               Entry point: starts the app, shows an error if it fails
@@ -47,7 +47,7 @@ public/                    Web root (the only folder that should be served)
     number-format.js       Rounding and Spanish display formatting (× ÷ − ,)
     errors.js              Error codes + CalculationError
   js/features/             Browser features, each with its dependencies passed in
-    history.js             Validated, capped calculation history
+    history.js             Validated history (keeps only the latest calculation)
     themes.js              Theme list and controller
     keyboard.js            Key → action mapping
   js/ui/                   Rendering only (textContent / DOM APIs, never innerHTML)
@@ -67,9 +67,9 @@ Expressions are stored in a canonical ASCII form (`-1.5*(2+3)`) and only convert
 ### Adding a theme
 
 1. Add `{ id, label }` to `THEMES` in `public/js/features/themes.js`.
-2. Add a matching `[data-theme="id"] { … }` block with every token to `public/css/themes.css`.
+2. Add a matching `[data-calculator-theme="id"] .calculator { … }` block with every token to `public/css/themes.css`.
 
-The tests fail if a theme has no CSS.
+The tests fail if a theme has no CSS, misses a token or has text below WCAG AA contrast.
 
 ## Security notes
 
