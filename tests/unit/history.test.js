@@ -5,9 +5,9 @@ import { HISTORY_STORAGE_KEY, MAX_HISTORY_ENTRIES, createHistory } from '../../p
 import { createSafeStorage } from '../../public/js/shared/storage.js';
 import { createMemoryStorage } from '../helpers/memory-storage.js';
 
-function setup(initial = {}, options = {}) {
+function setup(initial = {}, options = {}, historyOptions = {}) {
   const backend = createMemoryStorage(initial, options);
-  const history = createHistory(createSafeStorage(() => backend));
+  const history = createHistory(createSafeStorage(() => backend), historyOptions);
   return { backend, history };
 }
 
@@ -18,8 +18,17 @@ describe('history', () => {
 
   it('starts empty', () => assert.deepEqual(setup().history.getEntries(), []));
 
-  it('adds entries newest first and persists them', () => {
+  it('keeps only the latest calculation by default', () => {
+    assert.equal(MAX_HISTORY_ENTRIES, 1);
     const { backend, history } = setup();
+    history.add({ expression: '1+1', result: '2' });
+    history.add({ expression: '2*3', result: '6' });
+    assert.deepEqual(history.getEntries(), [{ expression: '2*3', result: '6' }]);
+    assert.deepEqual(JSON.parse(backend.dump()[HISTORY_STORAGE_KEY]), [{ expression: '2*3', result: '6' }]);
+  });
+
+  it('orders entries newest first when a larger limit is configured', () => {
+    const { backend, history } = setup({}, {}, { limit: 5 });
     history.add({ expression: '1+1', result: '2' });
     history.add({ expression: '2*3', result: '6' });
     const expected = [

@@ -2,7 +2,8 @@ import { isCanonicalExpression, isCanonicalNumber } from '../core/syntax.js';
 import { logger } from '../shared/logger.js';
 
 export const HISTORY_STORAGE_KEY = 'calculadora.historial';
-export const MAX_HISTORY_ENTRIES = 50;
+/** Only the latest completed calculation is kept; a new one replaces it. */
+export const MAX_HISTORY_ENTRIES = 1;
 
 /** @typedef {{ expression: string, result: string }} HistoryEntry */
 
