@@ -1,7 +1,7 @@
 {
-  "name": "calculadora-online",
+  "name": "cifralisto",
   "version": "1.0.0",
-  "description": "Calculadora online básica en español con historial, teclado y temas.",
+  "description": "CifraListo: calculadora online básica en español con historial, teclado y temas.",
   "private": true,
   "type": "module",
   "engines": {

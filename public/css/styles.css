@@ -78,6 +78,32 @@ a {
   padding-block: 28px 8px;
 }
 
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.brand__logo {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.brand__name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand__accent {
+  color: var(--color-accent);
+}
+
 .site-header h1 {
   margin: 0 0 4px;
   font-size: clamp(1.75rem, 5vw, 2.4rem);

@@ -54,6 +54,36 @@ describe('page: SEO', () => {
   });
 });
 
+describe('page: branding', () => {
+  const meta = (selector) => document.querySelector(selector)?.getAttribute('content');
+
+  it('names CifraListo in the title, description and social metadata', () => {
+    assert.match(document.title, /CifraListo/);
+    assert.match(meta('meta[name="description"]'), /CifraListo/);
+    assert.equal(meta('meta[property="og:site_name"]'), 'CifraListo');
+    assert.equal(meta('meta[name="application-name"]'), 'CifraListo');
+  });
+
+  it('points canonical and og:url at the CifraListo domain', () => {
+    assert.equal(document.querySelector('link[rel="canonical"]').getAttribute('href'), 'https://cifralisto.com/');
+    assert.equal(meta('meta[property="og:url"]'), 'https://cifralisto.com/');
+  });
+
+  it('uses the brand name in the structured data', () => {
+    const data = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);
+    const app = data['@graph'].find((node) => node['@type'] === 'WebApplication');
+    assert.equal(app.name, 'CifraListo');
+    assert.equal(app.url, 'https://cifralisto.com/');
+  });
+
+  it('shows the logo and wordmark in the header', () => {
+    const brand = document.querySelector('.site-header .brand');
+    assert.equal(normalize(brand.textContent), 'CifraListo');
+    assert.equal(brand.querySelector('img').getAttribute('src'), 'favicon.svg');
+    assert.equal(brand.querySelector('img').getAttribute('alt'), '', 'logo is decorative next to the name');
+  });
+});
+
 describe('page: security', () => {
   it('sets a strict Content-Security-Policy', () => {
     const csp = document.querySelector('meta[http-equiv="Content-Security-Policy"]').content;
@@ -80,7 +110,8 @@ describe('page: security', () => {
   it('loads only local assets that exist', () => {
     const references = [
       ...[...document.querySelectorAll('script[src]')].map((script) => script.getAttribute('src')),
-      ...[...document.querySelectorAll('link[href]')].map((link) => link.getAttribute('href')),
+      // Only links that load files; rel="canonical" is a URL, not an asset.
+      ...[...document.querySelectorAll('link[href]:not([rel="canonical"])')].map((link) => link.getAttribute('href')),
     ];
     assert.ok(references.length > 0);
     for (const reference of references) {

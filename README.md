@@ -1,6 +1,6 @@
-# Calculadora online
+# CifraListo
 
-A basic Spanish-language online calculator built with plain HTML, CSS and JavaScript (ES modules). It has no build step, no backend and no runtime dependencies.
+CifraListo (intended domain: [cifralisto.com](https://cifralisto.com/)) is a basic Spanish-language online calculator built with plain HTML, CSS and JavaScript (ES modules). It has no build step, no backend and no runtime dependencies.
 
 **Features:** addition, subtraction, multiplication and division, decimals (shown with a decimal comma), negative numbers, parentheses with standard operator precedence, clear, backspace, equals, full keyboard support, a history showing the latest completed calculation (stored in the browser), six calculator colour themes chosen from a dropdown (Claro by default; themes recolour only the calculator), and a responsive homepage with Spanish SEO content and FAQ structured data.
 
@@ -24,7 +24,7 @@ The site is the `public/` folder. Because it uses ES modules, it must be served 
 
 Upload only the contents of `public/`. On Apache, `public/.htaccess` sets the security headers (CSP, `nosniff`, `frame-ancestors`, and others) and cache headers. On other servers (Nginx, Netlify, a CDN), set the same headers in that platform's config.
 
-Before going live, add a `<link rel="canonical">` and `og:url` with your real domain in `public/index.html`, and optionally a `sitemap.xml`. These were left out because the domain isn't known yet.
+The canonical URL, `og:url` and structured data point to `https://cifralisto.com/`. Update them in `public/index.html` if the domain changes. A `sitemap.xml` is optional.
 
 There are no secrets or environment variables. If you add some later, keep them in `.env`, which is already ignored by git.
 
@@ -33,6 +33,7 @@ There are no secrets or environment variables. If you add some later, keep them 
 ```
 public/                    Web root (the only folder that should be served)
   index.html               Page markup, SEO content, FAQ + JSON-LD, CSP
+  favicon.svg              CifraListo logo mark (favicon and header logo)
   css/themes.css           Calculator-scoped tokens for the 6 themes
   css/styles.css           Layout and components (mobile first)
   js/theme-boot.js         Tiny classic script: applies saved theme before first paint
